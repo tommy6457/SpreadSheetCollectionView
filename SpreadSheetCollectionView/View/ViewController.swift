@@ -10,10 +10,10 @@ import UIKit
 class ViewController: UIViewController {
     
     struct Constants {
-        static let itemSize = CGSize(width: 44, height: 60)
-        static let rowCount = 20
+        static let itemSize = CGSize(width: 100, height: 44)
+        static let rowCount = 10
         static let fixRowWidth = itemSize.width * CGFloat(rowCount)
-        static let columnCount = 30
+        static let columnCount = 5
         static let fixColumnHeight = itemSize.height * CGFloat(columnCount)
     }
 
@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.collectionViewLayout = createLayout()
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(ItemCollectionViewCell.self, forCellWithReuseIdentifier: ItemCollectionViewCell.resuseID)
     }
     
     private func createLayout() -> UICollectionViewLayout {
@@ -36,10 +36,18 @@ class ViewController: UIViewController {
             let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(Constants.itemSize.width),
                                                   heightDimension: .absolute(Constants.itemSize.height))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            let subgroupSize = NSCollectionLayoutSize(widthDimension: .absolute(Constants.fixRowWidth),
+                                                      heightDimension: .absolute(Constants.itemSize.height))
+            var subgroups = [NSCollectionLayoutGroup]()
+            for _ in 0..<Constants.columnCount {
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: subgroupSize, subitems: [item])
+                subgroups.append(group)
+            }
             let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(Constants.fixRowWidth),
                                                   heightDimension: .absolute(Constants.fixColumnHeight))
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+            let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: subgroups)
             let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .continuous
             return section
         })
     }
@@ -52,7 +60,10 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemCollectionViewCell.resuseID, for: indexPath) as? ItemCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        cell.fill(indexpath: indexPath)
         cell.layer.borderColor = UIColor.black.cgColor
         cell.layer.borderWidth = 1.0
         return cell
