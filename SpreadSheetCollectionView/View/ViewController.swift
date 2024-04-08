@@ -29,37 +29,52 @@ class ViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.collectionViewLayout = createLayout()
         collectionView.register(ItemCollectionViewCell.self, forCellWithReuseIdentifier: ItemCollectionViewCell.resuseID)
-        collectionView.register(StickyCollectionReusableView.self, forSupplementaryViewOfKind: StickyCollectionReusableView.elementKind, withReuseIdentifier: StickyCollectionReusableView.reuseID)
+        collectionView.register(StickyHCollectionReusableView.self, forSupplementaryViewOfKind: StickyHCollectionReusableView.elementKind, withReuseIdentifier: StickyHCollectionReusableView.reuseID)
+        collectionView.register(StickyVCollectionReusableView.self, forSupplementaryViewOfKind: StickyVCollectionReusableView.elementKind, withReuseIdentifier: StickyVCollectionReusableView.reuseID)
         collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "reuse-header")
     }
     
     private func createLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout(sectionProvider: { (_, _) -> NSCollectionLayoutSection? in
             //header
-            let stickyHeaderSize = NSCollectionLayoutSize(widthDimension: .absolute(Constants.itemSize.width),
-                                                          heightDimension: .absolute(Constants.fixColumnHeight))
-            let stickyItem = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: stickyHeaderSize,
-                                                                      elementKind: StickyCollectionReusableView.elementKind,
+            //horizontal
+            let stickyHHeaderSize = NSCollectionLayoutSize(widthDimension: .absolute(Constants.itemSize.width),
+                                                          heightDimension: .absolute(Constants.fixColumnHeight + Constants.itemSize.height))
+            let stickyHHeaderItem = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: stickyHHeaderSize,
+                                                                      elementKind: StickyHCollectionReusableView.elementKind,
                                                                       alignment: .leading)
-            stickyItem.pinToVisibleBounds = true
+            stickyHHeaderItem.pinToVisibleBounds = true
+            //vertical
+            let stickyVHeaderSize = NSCollectionLayoutSize(widthDimension: .absolute(Constants.fixRowWidth + Constants.itemSize.width),
+                                                          heightDimension: .absolute(Constants.itemSize.height))
+            let stickyVHeaderItem = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: stickyVHeaderSize,
+                                                                      elementKind: StickyVCollectionReusableView.elementKind,
+                                                                      alignment: .topLeading)
+            stickyVHeaderItem.pinToVisibleBounds = true
             //item
             let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(Constants.itemSize.width),
                                                   heightDimension: .absolute(Constants.itemSize.height))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            let subgroupSize = NSCollectionLayoutSize(widthDimension: .absolute(Constants.fixRowWidth),
+            let subgroupSize = NSCollectionLayoutSize(widthDimension: .absolute(Constants.fixRowWidth + Constants.itemSize.width),
                                                       heightDimension: .absolute(Constants.itemSize.height))
             var subgroups = [NSCollectionLayoutGroup]()
             for _ in 0..<Constants.columnCount {
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: subgroupSize, subitems: [item])
+                group.contentInsets = .init(top: 0, leading: Constants.itemSize.width, bottom: 0, trailing: 0)
                 subgroups.append(group)
             }
             let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(Constants.fixRowWidth + Constants.itemSize.width),
-                                                  heightDimension: .absolute(Constants.fixColumnHeight))
+                                                  heightDimension: .absolute(Constants.fixColumnHeight + Constants.itemSize.height))
             let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: subgroups)
-            group.contentInsets = .init(top: 0, leading: Constants.itemSize.width, bottom: 0, trailing: 0)
+            //固定上方Header，不固定左方Header
+            group.supplementaryItems = [stickyHHeaderItem]
             let section = NSCollectionLayoutSection(group: group)
             section.orthogonalScrollingBehavior = .continuous
-            section.boundarySupplementaryItems = [stickyItem]
+            section.boundarySupplementaryItems = [stickyVHeaderItem]
+            //固定左、右方Header
+//            let section = NSCollectionLayoutSection(group: group)
+//            section.orthogonalScrollingBehavior = .continuous
+//            section.boundarySupplementaryItems = [stickyHHeaderItem,stickyVHeaderItem]
             return section
         })
     }
@@ -84,11 +99,17 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         switch kind {
-        case StickyCollectionReusableView.elementKind:
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: StickyCollectionReusableView.elementKind,
-                                                                         withReuseIdentifier: StickyCollectionReusableView.reuseID,
-                                                                         for: indexPath) as! StickyCollectionReusableView
+        case StickyHCollectionReusableView.elementKind:
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: StickyHCollectionReusableView.elementKind,
+                                                                         withReuseIdentifier: StickyHCollectionReusableView.reuseID,
+                                                                         for: indexPath) as! StickyHCollectionReusableView
             header.configure(columnCount: Constants.columnCount, cellSize: Constants.itemSize)
+            return header
+        case StickyVCollectionReusableView.elementKind:
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: StickyVCollectionReusableView.elementKind,
+                                                                         withReuseIdentifier: StickyVCollectionReusableView.reuseID,
+                                                                         for: indexPath) as! StickyVCollectionReusableView
+            header.configure(rowCount: Constants.rowCount, cellSize: Constants.itemSize)
             return header
         default:
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind,

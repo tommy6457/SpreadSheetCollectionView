@@ -14,7 +14,8 @@
 		2FD927842BBBF9B20069A009 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2FD927832BBBF9B20069A009 /* Assets.xcassets */; };
 		2FD927872BBBF9B20069A009 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FD927852BBBF9B20069A009 /* LaunchScreen.storyboard */; };
 		2FD927902BBBFF660069A009 /* ItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD9278F2BBBFF660069A009 /* ItemCollectionViewCell.swift */; };
-		2FD927A22BBCEE3E0069A009 /* StickyCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD927A12BBCEE3E0069A009 /* StickyCollectionReusableView.swift */; };
+		2FD927A22BBCEE3E0069A009 /* StickyHCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD927A12BBCEE3E0069A009 /* StickyHCollectionReusableView.swift */; };
+		2FD927A42BBD26540069A009 /* StickyVCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD927A32BBD26540069A009 /* StickyVCollectionReusableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +28,8 @@
 		2FD927862BBBF9B20069A009 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2FD927882BBBF9B20069A009 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2FD9278F2BBBFF660069A009 /* ItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCollectionViewCell.swift; sourceTree = "<group>"; };
-		2FD927A12BBCEE3E0069A009 /* StickyCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyCollectionReusableView.swift; sourceTree = "<group>"; };
+		2FD927A12BBCEE3E0069A009 /* StickyHCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyHCollectionReusableView.swift; sourceTree = "<group>"; };
+		2FD927A32BBD26540069A009 /* StickyVCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyVCollectionReusableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +78,8 @@
 			children = (
 				2FD9277E2BBBF9B00069A009 /* ViewController.swift */,
 				2FD9278F2BBBFF660069A009 /* ItemCollectionViewCell.swift */,
-				2FD927A12BBCEE3E0069A009 /* StickyCollectionReusableView.swift */,
+				2FD927A12BBCEE3E0069A009 /* StickyHCollectionReusableView.swift */,
+				2FD927A32BBD26540069A009 /* StickyVCollectionReusableView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -154,7 +157,8 @@
 			files = (
 				2FD9277F2BBBF9B00069A009 /* ViewController.swift in Sources */,
 				2FD927902BBBFF660069A009 /* ItemCollectionViewCell.swift in Sources */,
-				2FD927A22BBCEE3E0069A009 /* StickyCollectionReusableView.swift in Sources */,
+				2FD927A22BBCEE3E0069A009 /* StickyHCollectionReusableView.swift in Sources */,
+				2FD927A42BBD26540069A009 /* StickyVCollectionReusableView.swift in Sources */,
 				2FD9277B2BBBF9B00069A009 /* AppDelegate.swift in Sources */,
 				2FD9277D2BBBF9B00069A009 /* SceneDelegate.swift in Sources */,
 			);

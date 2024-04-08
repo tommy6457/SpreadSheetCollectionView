@@ -1,5 +1,5 @@
 //
-//  StickyCollectionReusableView.swift
+//  StickyVCollectionReusableView.swift
 //  SpreadSheetCollectionView
 //
 //  Created by Sam Lee iMac24 on 2024/4/3.
@@ -7,10 +7,10 @@
 
 import UIKit
 
-class StickyCollectionReusableView: UICollectionReusableView {
+class StickyVCollectionReusableView: UICollectionReusableView {
     
-    static let reuseID = "stickyCollectionReusableView"
-    static let elementKind = "sticky-header-H"
+    static let reuseID = "stickyVCollectionReusableView"
+    static let elementKind = "sticky-header-V"
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -20,21 +20,21 @@ class StickyCollectionReusableView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(columnCount: Int, cellSize: CGSize) {
+    func configure(rowCount: Int, cellSize: CGSize) {
         
-        var y = 0.0
+        var x = cellSize.width
         
-        for i in 0..<columnCount {
-            let frame = CGRect(origin: .init(x: 0, y: y),
+        for i in 0..<rowCount {
+            let frame = CGRect(origin: .init(x: x, y: 0),
                                size: cellSize)
             let label = UILabel(frame: frame)
             addSubview(label)
-            label.text = "column: \(i)"
+            label.text = "row: \(i)"
             label.textAlignment = .center
             label.backgroundColor = .lightGray
             label.layer.borderColor = UIColor.black.cgColor
             label.layer.borderWidth = 1.0
-            y += cellSize.height
+            x += cellSize.width
         }
     }
 }
